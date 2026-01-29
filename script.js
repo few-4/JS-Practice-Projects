@@ -58,7 +58,7 @@ box.addEventListener("click", function (e) {
         let reactionTime = end - start;
         
     if (navigator.vibrate) {
-        navigator.vibrate([100, 50, 100]);
+        navigator.vibrate([150]);
     }
 
     time.textContent = reactionTime;
