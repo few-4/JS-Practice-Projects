@@ -1,7 +1,11 @@
 let button = document.querySelector("#startBtn");
 let best = document.querySelector("#best");
 let box = document.querySelector("#box");
+let area = document.querySelector("#gameArea");
 let time = document.querySelector("#time");
+
+let canClick = false;
+let boxTimeout;
 
 let sound = new Audio("sound.wav");
 
@@ -14,6 +18,16 @@ if (savedBest !== null) {
     best.textContent = BestTime;
 }
 
+area.addEventListener("click", function () {
+    if (!canClick && button.style.pointerEvents === "none") {
+        clearTimeout(boxTimeout);
+        alert("Too early! Wait for the box to appear.");
+        button.style.opacity = "1";
+        button.style.pointerEvents = "auto";
+        box.style.display = "none";
+    }
+});
+
 
 button.addEventListener("click", function () {
     button.style.opacity = "0";
@@ -25,22 +39,27 @@ button.addEventListener("click", function () {
 
     
 
-    setTimeout(() => {
+    boxTimeout = setTimeout(() => {
         box.style.left = randomX + "px";
         box.style.top = randomY + "px";
         box.style.display = "block";
         start = Date.now();
+        canClick = true;
     }, RandomTime);
-    });
+});
 
-box.addEventListener("click", function () {
+
+box.addEventListener("click", function (e) {
+        e.stopPropagation();
         sound.currentTime = 0;
         sound.play();
 
         let end = Date.now();
         let reactionTime = end - start;
         
-
+    if (navigator.vibrate) {
+        navigator.vibrate([100, 50, 100]);
+    }
 
     time.textContent = reactionTime;
 
@@ -53,4 +72,5 @@ box.addEventListener("click", function () {
     box.style.display = "none";
     button.style.opacity = "1";
     button.style.pointerEvents = "auto";
+    canClick = false;
 });

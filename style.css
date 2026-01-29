@@ -42,8 +42,8 @@ button {
   height: 50px;
   background: crimson;
   position: absolute;
-  top: 75%;
-  left: 83%;
+  top: 0px;
+  left: 0px;
   display: none;
   cursor: pointer;
 }
